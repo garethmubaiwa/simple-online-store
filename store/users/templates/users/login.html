@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 0 auto;">
+    <h2>Login to Your Account</h2>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div style="padding: 10px; margin: 10px 0; background: {% if message.tags == 'error' %}#ffebee{% else %}#e8f5e8{% endif %}; border-radius: 4px;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px;">Username:</label>
+            {{ form.username }}
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px;">Password:</label>
+            {{ form.password }}
+        </div>
+        
+        <button type="submit" style="width: 100%; padding: 12px; background: #2c5aa0; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Login
+        </button>
+    </form>
+    
+    <p style="text-align: center; margin-top: 20px;">
+        Don't have an account? <a href="{% url 'register' %}">Register here</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Our Book Collection - BookVerse{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Discover Your Next Favorite Book</h1>
+        <p>Explore our carefully curated collection of books across all genres</p>
+    </div>
+    
+    <!-- Search Form -->
+    {% if query %}
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <p style="font-size: 1.1rem; color: var(--gray);">
+            Found <strong style="color: var(--primary);">{{ products|length }}</strong> 
+            book{{ products|length|pluralize }} matching "{{ query }}"
+            <a href="{% url 'product_list' %}" style="margin-left: 1rem; color: var(--accent); text-decoration: none;">
+                ✕ Clear search
+            </a>
+        </p>
+    </div>
+    {% endif %}
+    
+    <!-- Products Grid -->
+    <div class="products-grid">
+        {% for product in products %}
+        <div class="product-card">
+            <div class="product-image-container">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                {% else %}
+                    <div class="product-image-placeholder">
+                        <div>📚</div>
+                        <div style="font-size: 0.9rem;">No Image</div>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="product-info">
+                <h3 class="product-title">{{ product.name }}</h3>
+                <p class="product-description">{{ product.description|truncatewords:25 }}</p>
+                
+                <div class="product-meta">
+                    <div class="product-price">${{ product.price }}</div>
+                    <div class="product-stock {% if product.stock > 10 %}stock-in{% else %}stock-low{% endif %}">
+                        {{ product.stock }} in stock
+                    </div>
+                </div>
+                
+                <button 
+                    onclick="location.href='{% url 'add_to_cart' product.id %}'"
+                    class="btn btn-primary"
+                >
+                    Add to Cart 🛒
+                </button>
+            </div>
+        </div>
+        {% empty %}
+            <div style="grid-column: 1 / -1; text-align: center; padding: 4rem;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">📖</div>
+                <h3 style="color: var(--gray); margin-bottom: 1rem;">No books found</h3>
+                <p style="color: var(--gray); margin-bottom: 2rem;">
+                    {% if query %}
+                        No books matching "{{ query }}" were found.
+                    {% else %}
+                        Our book collection is currently empty.
+                    {% endif %}
+                </p>
+                <a href="{% url 'product_list' %}" class="btn btn-outline">
+                    Browse All Books
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Your Profile{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <h2>Your Profile</h2>
+    
+    <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email|default:"Not provided" }}</p>
+        <p><strong>Member since:</strong> {{ user.date_joined|date:"F j, Y" }}</p>
+    </div>
+    
+    <div style="margin-top: 30px;">
+        <a href="{% url 'logout' %}" style="background: #ff4444; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
+            Logout
+        </a>
+    </div>
+</div>
+{% endblock %}
